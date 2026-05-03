@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
     const { id } = req.query;
     if (!id) {
-        return res.status(400).json({ error: 'ID is required' });
+        return res.status(400).json({ error: 'missing fields' });
     }
     const supabaseBaseUrl = "https://dgngxyqbtecqudhqlogp.supabase.co/storage/v1/object/public/game-assets";
     try {
@@ -10,19 +10,19 @@ export default async function handler(req, res) {
         if (response.ok) {
             const buffer = await response.arrayBuffer();
             res.setHeader('Content-Type', 'image/png');
-            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');//
+            res.setHeader('Content-Disposition', `attachment; filename="asset_${id}.png"`);
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
             return res.send(Buffer.from(buffer));
         }
         const rbxlUrl = `${supabaseBaseUrl}/places/${id}.rbxl`;
         const rbxlResponse = await fetch(rbxlUrl);
-
         if (rbxlResponse.ok) {
             const buffer = await rbxlResponse.arrayBuffer();
             res.setHeader('Content-Type', 'application/octet-stream');
-            res.setHeader('Content-Disposition', `attachment; filename="${id}.rbxl"`);
+            res.setHeader('Content-Disposition', `attachment; filename="game_${id}.rbxl"`);
             return res.send(Buffer.from(buffer));
         }
-        return res.status(404).json({ error: 'Asset not found in thumbnails or places' });
+        return res.status(404).json({ error: 'could not fetch' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });
