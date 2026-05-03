@@ -1,0 +1,23 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: aliceblue;
+    background-color: darkkhaki;
+}
+
+.main {
+    background-color: rgb(170, 166, 113);
+    background-size: 50px;
+}
+
+.potato-myths {
+    background-color: rgb(182, 178, 126);
+    background-size: 50px;
+}
+
+.potato-icon {
+    width: 30px;
+}
+
+.btn {
+    background-color: burlywood;
+}
